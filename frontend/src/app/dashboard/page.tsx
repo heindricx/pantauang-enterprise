@@ -7,7 +7,8 @@ export default function DashboardHome() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://heindricx-pantauang-backend.hf.space/dashboard/metrics")
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${apiUrl}/dashboard/metrics`)
       .then(res => res.json())
       .then(data => {
         setMetrics(data);
