@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { Navbar } from "@/components/layout/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
 export const metadata: Metadata = {
   title: "PantaUang Kita | Intelligence Dashboard",
@@ -16,14 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className="light">
-      <body className={`${inter.className} bg-slate-50 text-slate-800 overflow-hidden`}>
-        <div className="flex h-screen w-full relative">
-          <Sidebar />
-          <main className="flex-1 ml-20 md:ml-64 relative overflow-hidden flex flex-col h-full bg-slate-50">
-            {children}
-          </main>
-        </div>
+    <html lang="id" className={`light ${playfair.variable} ${jakarta.variable}`}>
+      <body className="font-sans bg-slate-50 text-slate-800 overflow-hidden flex flex-col h-screen">
+        <Navbar />
+        <main className="flex-1 relative overflow-auto bg-slate-50 w-full">
+          {children}
+        </main>
       </body>
     </html>
   );

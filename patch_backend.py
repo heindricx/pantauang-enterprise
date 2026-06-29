@@ -1,4 +1,9 @@
-from fastapi import APIRouter, Depends
+import os
+
+backend_file = r"D:\satdat 2026\sec\pantauang-enterprise\backend\app\api\endpoints\palantir_api.py"
+
+with open(backend_file, "w") as f:
+    f.write('''from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.db.session import SessionLocal
@@ -120,3 +125,6 @@ def get_methodology_stats():
         },
         "total_data": "3,009,417"
     }
+''')
+
+print("Backend API Updated")

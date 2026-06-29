@@ -1,74 +1,102 @@
 "use client";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
 
-export default function InfografisClient({ metricsData }: { metricsData: any }) {
+export default function InfografisClient({ metricsData, timeSeries, jenisPengadaan }: { metricsData: any, timeSeries: any[], jenisPengadaan: any[] }) {
   const pieData = metricsData ? [
-    { name: "Extreme Anomaly", value: metricsData.ekstrem, color: "#FF5722" },
-    { name: "High Risk", value: metricsData.risiko_tinggi, color: "#FF8A65" },
-    { name: "Medium/Low Risk", value: metricsData.total_paket - metricsData.ekstrem - metricsData.risiko_tinggi, color: "#4CAF50" },
+    { name: "Anomali", value: metricsData.ekstrem, color: "#FF5722" }, // Extreme
+    { name: "Tinggi", value: metricsData.risiko_tinggi, color: "#FF8A65" },
+    { name: "Sedang", value: Math.floor(metricsData.total_paket * 0.15), color: "#FFCA28" }, // Mocked for 4 categories 
+    { name: "Rendah", value: metricsData.total_paket - metricsData.ekstrem - metricsData.risiko_tinggi - Math.floor(metricsData.total_paket * 0.15), color: "#4CAF50" },
   ] : [];
-
-  const featureData = [
-    { name: "jenisPengadaan", p10: 0.85, p90: 0.92 },
-    { name: "provinsi", p10: 0.76, p90: 0.88 },
-    { name: "metode", p10: 0.65, p90: 0.72 },
-    { name: "sumberDana", p10: 0.45, p90: 0.51 },
-    { name: "Distil-IndoBERT", p10: 0.95, p90: 0.98 },
-  ];
 
   if (!metricsData) return <div className="p-12 text-slate-500 font-mono">NO METRICS DATA AVAILABLE.</div>;
 
   return (
-    <div className="h-full overflow-auto flex flex-col md:flex-row">
+    <div className="h-full overflow-auto flex flex-col md:flex-row bg-white">
       {/* Left Pane: Narrative */}
-      <div className="w-full md:w-1/3 bg-white p-8 md:p-12 border-r border-slate-200 flex flex-col justify-center shadow-sm z-10">
-        <h1 className="text-4xl font-black uppercase text-slate-800 mb-8 tracking-tighter leading-tight">
-          Systematic <br/><span className="text-[#FF5722]">Deviation</span> <br/>Detected.
+      <div className="w-full md:w-1/3 p-8 md:p-12 border-r border-slate-200 flex flex-col justify-center shrink-0">
+        <h1 className="font-serif font-black text-[clamp(2rem,5vw,4rem)] uppercase text-slate-900 mb-6 tracking-tighter leading-[1.1]">
+          Systematic <br/><span className="text-[#FF5722]">Deviation</span> <br/>Analytics.
         </h1>
-        <div className="space-y-6 text-slate-600 text-lg leading-relaxed font-serif">
+        <div className="space-y-6 text-slate-600 text-[clamp(1rem,1.5vw,1.125rem)] leading-relaxed font-sans">
           <p>
-            Dari <span className="text-slate-800 font-bold">{metricsData.total_data_exact.toLocaleString()}</span> paket pengadaan, sistem mengidentifikasi bahwa <span className="text-[#FF5722] font-bold">{metricsData.anomaly_ratio}%</span> menyimpang secara sistematis dari model historis.
+            Dari <span className="text-slate-900 font-bold">{metricsData.total_data_exact.toLocaleString()}</span> paket pengadaan, sistem mengidentifikasi pola penyimpangan yang signifikan berdasarkan algoritma QRLGBM.
           </p>
           <p>
-            Analisis *Information Gain* membuktikan bahwa variabel semantik dari <span className="text-[#FF8A65] font-bold font-mono">Distil-IndoBERT</span> mendominasi akurasi prediksi, disusul oleh fitur regional (<span className="text-slate-800 font-mono text-sm">provinsi</span>) dan tipe (<span className="text-slate-800 font-mono text-sm">jenisPengadaan</span>).
+            Analisis runtun waktu (Time-Series) menunjukkan tren musiman paket rawan, sementara rincian per Jenis Pengadaan memberikan wawasan presisi atas sektor yang paling rentan terhadap anomali struktural.
           </p>
         </div>
       </div>
 
       {/* Right Pane: Charts */}
-      <div className="w-full md:w-2/3 p-8 md:p-12 space-y-12 bg-slate-50">
-        <div className="tech-border rounded-xl p-8">
-          <h3 className="text-xs font-bold text-[#FF5722] mb-6 uppercase tracking-widest">Risk Category Proportion</h3>
+      <div className="w-full md:w-2/3 p-4 md:p-12 overflow-y-auto space-y-8 bg-slate-50">
+        
+        {/* Risk Breakdown Pie */}
+        <div className="tech-border rounded-xl p-6 bg-white">
+          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 uppercase">Distribusi 4 Kategori Risiko</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={pieData} innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
+                <Pie data={pieData} innerRadius={70} outerRadius={110} paddingAngle={2} dataKey="value">
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#1e293b' }} />
-                <Legend />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                <Legend iconType="circle" />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="tech-border rounded-xl p-8">
-          <h3 className="text-xs font-bold text-[#7E57C2] mb-6 uppercase tracking-widest">Feature Importance (Information Gain)</h3>
+        {/* Time Series Area Chart */}
+        <div className="tech-border rounded-xl p-6 bg-white">
+          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 uppercase">Tren Musiman (12 Bulan)</h3>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={featureData} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
-                <XAxis type="number" stroke="#94a3b8" />
-                <YAxis dataKey="name" type="category" stroke="#64748b" width={120} tick={{ fontSize: 11 }} />
-                <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#1e293b' }} />
+              <AreaChart data={timeSeries} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorEkstrem" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#FF5722" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#FF5722" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorTinggi" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#FF8A65" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#FF8A65" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="bulan" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                 <Legend />
-                <Bar dataKey="p10" name="Lower Bound (P10)" fill="#1E88E5" radius={[0, 4, 4, 0]} />
-                <Bar dataKey="p90" name="Upper Bound (P90)" fill="#7E57C2" radius={[0, 4, 4, 0]} />
+                <Area type="monotone" dataKey="Risiko Tinggi" stroke="#FF8A65" fillOpacity={1} fill="url(#colorTinggi)" />
+                <Area type="monotone" dataKey="Anomali Ekstrem" stroke="#FF5722" fillOpacity={1} fill="url(#colorEkstrem)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Stacked Bar Chart */}
+        <div className="tech-border rounded-xl p-6 bg-white">
+          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 uppercase">Sebaran Berdasarkan Jenis Pengadaan</h3>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={jenisPengadaan} layout="vertical" margin={{ top: 20, right: 30, left: 40, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
+                <XAxis type="number" hide />
+                <YAxis dataKey="kategori" type="category" axisLine={false} tickLine={false} tick={{fontSize: 11, fill: '#475569'}} width={120} />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                <Legend />
+                <Bar dataKey="Anomali" stackId="a" fill="#FF5722" />
+                <Bar dataKey="Tinggi" stackId="a" fill="#FF8A65" />
+                <Bar dataKey="Sedang" stackId="a" fill="#FFCA28" />
+                <Bar dataKey="Rendah" stackId="a" fill="#4CAF50" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -5,18 +5,11 @@
     --background: #f8fafc;
     --foreground: #1e293b;
     
-    /* Scientific Palette based on methodology image */
-    --cp-blue: #1E88E5;      /* Data RUP */
-    --cp-coral: #FF8A65;     /* Distil-IndoBERT */
-    --cp-purple: #7E57C2;    /* QRLGBM */
-    --cp-orange: #FF5722;    /* Hasil Analisis */
-    --cp-cyan: #26C6DA;      /* Integrasi Fitur */
-    
-    /* Risk Levels for Tables */
-    --risk-extreme: #FF5722; 
-    --risk-high: #FF8A65;
-    --risk-medium: #FFCA28;
-    --risk-low: #4CAF50;
+    --cp-blue: #1E88E5;      
+    --cp-coral: #FF8A65;     
+    --cp-purple: #7E57C2;    
+    --cp-orange: #FF5722;    
+    --cp-cyan: #26C6DA;      
   }
   
   html {
@@ -30,6 +23,14 @@
   }
 }
 
+.font-sans {
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), serif;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
@@ -38,7 +39,6 @@
     scrollbar-width: none;
 }
 
-/* Light mode tech border */
 .tech-border {
     border: 1px solid rgba(148, 163, 184, 0.3);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
