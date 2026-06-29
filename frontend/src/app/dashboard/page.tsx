@@ -7,7 +7,7 @@ export default function DashboardHome() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/dashboard/metrics")
+    fetch("https://heindricx-pantauang-backend.hf.space")
       .then(res => res.json())
       .then(data => {
         setMetrics(data);

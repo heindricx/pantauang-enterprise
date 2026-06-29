@@ -6,7 +6,7 @@ export default function ProcurementPage() {
   const [data, setData] = useState([]);
   
   useEffect(() => {
-    fetch("http://localhost:8000/procurement?limit=100")
+    fetch("https://heindricx-pantauang-backend.hf.space")
       .then(res => res.json())
       .then(d => setData(d.data || []));
   }, []);
