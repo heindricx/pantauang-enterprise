@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Activity, Database, AlertOctagon, TrendingUp, ArrowRight, ExternalLink } from "lucide-react";
+import { Activity, Database, AlertOctagon, TrendingUp, ArrowRight, ExternalLink, Map as MapIcon } from "lucide-react";
 import Link from "next/link";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
