@@ -104,7 +104,7 @@ export default function PetaClient({ initialRegions }: { initialRegions: any[] }
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-slate-50 relative">
+    <div className="min-h-[calc(100vh-4rem)] w-full flex flex-col bg-slate-50 relative">
       {/* Container header diluar map agar tidak tertumpuk */}
       <div className="bg-white px-6 py-4 border-b border-slate-200 z-10 flex flex-col md:flex-row items-center justify-between shadow-sm shrink-0">
         <div className="text-center md:text-left mb-4 md:mb-0 w-full md:w-auto">
@@ -128,8 +128,9 @@ export default function PetaClient({ initialRegions }: { initialRegions: any[] }
         </div>
       </div>
 
-      <div className="flex-1 w-full relative min-h-[400px]">
+      <div className="flex-1 w-full relative min-h-[60vh]">
         <Map
+          style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
           initialViewState={{ longitude: 118, latitude: -2.5, zoom: 4.5 }}
           mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
           interactiveLayerIds={["provinsi-fill"]}
