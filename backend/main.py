@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import dashboard, procurement, anomalies, risk_map, ml
+from app.api.endpoints import dashboard, procurement
 
 app = FastAPI(
     title="PantaUang Kita Enterprise API",
