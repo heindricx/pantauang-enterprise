@@ -1,4 +1,10 @@
-"use client";
+"""Write all TSX files directly with UTF-8 encoding"""
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+# ─── InfografisClient.tsx ───
+infografis_tsx = r'''"use client";
 import {
   PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid
@@ -173,3 +179,9 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
     </div>
   );
 }
+'''
+
+with open(os.path.join(FRONTEND_APP, "infografis/InfografisClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(infografis_tsx)
+
+print("InfografisClient done")

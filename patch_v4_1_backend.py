@@ -1,4 +1,12 @@
-from fastapi import APIRouter, Depends, Query
+import os
+
+BACKEND_DIR = r"D:\satdat 2026\sec\pantauang-enterprise\backend\app\api\endpoints"
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+FRONTEND_COMPONENTS = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\components"
+
+# ─── 1. BACKEND: Upgrade procurement.py to full pagination + multi-filter ───
+with open(os.path.join(BACKEND_DIR, "procurement.py"), "w") as f:
+    f.write('''from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.db.session import SessionLocal
@@ -89,3 +97,6 @@ def get_filter_options(db: Session = Depends(get_db)):
         "provinsi": fetch_distinct("provinsi"),
         "metode": fetch_distinct("metode"),
     }
+''')
+
+print("Backend procurement.py upgraded")

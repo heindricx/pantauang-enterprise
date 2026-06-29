@@ -4,40 +4,73 @@
   :root {
     --background: #f8fafc;
     --foreground: #1e293b;
-    --cp-blue: #1E88E5;      
-    --cp-coral: #FF8A65;     
-    --cp-purple: #7E57C2;    
-    --cp-orange: #FF5722;    
-    --cp-cyan: #26C6DA;      
+    --cp-blue: #1E88E5;
+    --cp-coral: #FF8A65;
+    --cp-purple: #7E57C2;
+    --cp-orange: #FF5722;
+    --cp-cyan: #26C6DA;
   }
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: #f8fafc;
+    color: #1e293b;
     overflow-x: hidden;
   }
 }
 
-.font-sans {
-  font-family: var(--font-jakarta), sans-serif;
+.font-sans { font-family: var(--font-jakarta), "Segoe UI", sans-serif; }
+.font-serif { font-family: var(--font-playfair), Georgia, serif; }
+
+/* === GEOMETRIC GRID BACKGROUND === */
+.bg-grid {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-.font-serif {
-  font-family: var(--font-playfair), serif;
+/* === DOT GRID for dark sections === */
+.bg-dot-dark {
+  background-color: #0f172a;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+/* === GLASS CARD === */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.5);
 }
 
+.glass-dark {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* === TECH BORDER === */
 .tech-border {
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.06);
+  background: #ffffff;
 }
+
+/* === HOVER LIFT === */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.12);
+}
+
+/* === TICKER === */
+@keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+/* === SCROLLBAR HIDE === */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

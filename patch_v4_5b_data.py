@@ -1,4 +1,9 @@
-"use client";
+"""Write DataClient.tsx and data/page.tsx with UTF-8 encoding"""
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+data_client_tsx = r'''"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronDown, ChevronRight, Search, Download, X, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft } from "lucide-react";
 import { ChevronRight as ChevronRightIcon } from "lucide-react";
@@ -284,3 +289,30 @@ export default function DataClient({ filterOptions }: { filterOptions?: any }) {
     </div>
   );
 }
+'''
+
+with open(os.path.join(FRONTEND_APP, "data/DataClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(data_client_tsx)
+
+# data/page.tsx
+page_tsx = '''async function fetchSSR(endpoint: string) {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+    const res = await fetch(`${apiUrl}${endpoint}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+import DataClient from "./DataClient";
+
+export default async function DataPage() {
+  const filterOptions = await fetchSSR("/procurement/filters") || { provinsi: [], metode: [] };
+  return <DataClient filterOptions={filterOptions} />;
+}
+'''
+
+with open(os.path.join(FRONTEND_APP, "data/page.tsx"), "w", encoding="utf-8") as f:
+    f.write(page_tsx)
+
+print("DataClient + page.tsx done")

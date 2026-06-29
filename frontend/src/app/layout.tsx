@@ -4,24 +4,20 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair", display: "swap" });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "PantaUang Kita | Intelligence Dashboard",
-  description: "Government Intelligence Dashboard for public procurement anomaly detection.",
+  title: "PantaUang Kita | Procurement Intelligence Platform",
+  description: "Platform intelijen risiko pengadaan pemerintah berbasis machine learning.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`light ${playfair.variable} ${jakarta.variable}`}>
-      <body className="font-sans bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+    <html lang="id" className={`${playfair.variable} ${jakarta.variable}`}>
+      <body className="font-sans text-slate-800 flex flex-col min-h-screen bg-grid">
         <Navbar />
-        <main className="flex-1 relative w-full pt-16">
+        <main className="flex-1 w-full pt-16">
           {children}
         </main>
         <Footer />

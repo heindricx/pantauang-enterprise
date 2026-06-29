@@ -1,4 +1,10 @@
-"use client";
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+# ─── 6. HomeClient.tsx (Immersive Landing) ───
+with open(os.path.join(FRONTEND_APP, "HomeClient.tsx"), "w") as f:
+    f.write('''"use client";
 import { motion } from "framer-motion";
 import { Activity, Database, AlertOctagon, TrendingUp, ArrowRight, ExternalLink, Map as MapIcon, BarChart2 } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +40,7 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
           <div className="animate-[marquee_25s_linear_infinite] whitespace-nowrap flex gap-8 absolute items-center h-full px-4">
             {tickerData?.length > 0 ? tickerData.map((t: any, i: number) => (
               <span key={i} className="text-slate-600 text-xs font-sans">
-                <span className="text-[#FF5722] font-bold">[{t.score?.toFixed(2)}]</span> {t.agenda} � Rp {(t.pagu / 1e9).toFixed(1)}M
+                <span className="text-[#FF5722] font-bold">[{t.score?.toFixed(2)}]</span> {t.agenda} — Rp {(t.pagu / 1e9).toFixed(1)}M
               </span>
             )) : <span className="text-slate-400 text-xs">Menghubungkan ke server data...</span>}
           </div>
@@ -53,7 +59,7 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
               <motion.div variants={fadeUp} custom={0} initial="hidden" animate="visible"
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1E88E5]/10 border border-[#1E88E5]/20 text-[#1E88E5] text-xs font-bold font-sans mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1E88E5] animate-pulse" />
-                Live � {(metricsData?.total_data_exact || 3009417).toLocaleString()}+ Data Analisis
+                Live — {(metricsData?.total_data_exact || 3009417).toLocaleString()}+ Data Analisis
               </motion.div>
 
               <motion.h1 variants={fadeUp} custom={1} initial="hidden" animate="visible"
@@ -83,7 +89,7 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
             <motion.div variants={fadeUp} custom={2} initial="hidden" animate="visible"
               className="glass rounded-3xl p-8 shadow-xl border border-white/60 hover-lift">
               <h3 className="font-serif text-lg font-bold text-slate-800 mb-1">Distribusi Kategori Risiko</h3>
-              <p className="text-slate-400 text-xs font-sans mb-4">Berdasarkan skor QRLGBM � 3.009.417 paket</p>
+              <p className="text-slate-400 text-xs font-sans mb-4">Berdasarkan skor QRLGBM — 3.009.417 paket</p>
               <div className="h-[220px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -157,3 +163,6 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
     </div>
   );
 }
+''')
+
+print("Step 2: HomeClient done")

@@ -1,12 +1,18 @@
-"use client";
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+# ─── 7. InfografisClient.tsx (Flourish-inspired) ───
+with open(os.path.join(FRONTEND_APP, "infografis/InfografisClient.tsx"), "w", encoding="utf-8") as f:
+    f.write('''"use client";
 import {
   PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid
+  XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid, LineChart, Line
 } from "recharts";
 import { motion } from "framer-motion";
 
-const RISK_COLORS: Record<string, string> = { Anomali: "#FF5722", Tinggi: "#FF8A65", Sedang: "#FFCA28", Rendah: "#4CAF50" };
-const RISK_LIGHT:  Record<string, string> = { Anomali: "#FFF3F0", Tinggi: "#FFF7F4", Sedang: "#FEFCE8", Rendah: "#F0FDF4" };
+const RISK_COLORS = { Anomali: "#FF5722", Tinggi: "#FF8A65", Sedang: "#FFCA28", Rendah: "#4CAF50" };
+const RISK_LIGHT   = { Anomali: "#FFF3F0", Tinggi: "#FFF7F4", Sedang: "#FEFCE8", Rendah: "#F0FDF4" };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
@@ -26,29 +32,29 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function InfografisClient({ metricsData, timeSeries, jenisPengadaan }: {
   metricsData: any; timeSeries: any[]; jenisPengadaan: any[];
 }) {
-  const total   = metricsData?.total_paket || 3009417;
+  const total = metricsData?.total_paket || 3009417;
   const anomali = metricsData?.ekstrem || 75120;
-  const tinggi  = metricsData?.risiko_tinggi || 149871;
-  const sedang  = Math.floor(total * 0.15);
-  const rendah  = total - anomali - tinggi - sedang;
+  const tinggi = metricsData?.risiko_tinggi || 149871;
+  const sedang = Math.floor(total * 0.15);
+  const rendah = total - anomali - tinggi - sedang;
 
   const pieData = [
     { name: "Anomali", value: anomali },
-    { name: "Tinggi",  value: tinggi  },
-    { name: "Sedang",  value: sedang  },
-    { name: "Rendah",  value: rendah  },
+    { name: "Tinggi", value: tinggi },
+    { name: "Sedang", value: sedang },
+    { name: "Rendah", value: rendah },
   ];
 
   const summaryCards = [
-    { label: "Total Paket",     value: total.toLocaleString(),   color: "#1E88E5", pct: "100%"                             },
+    { label: "Total Paket", value: total.toLocaleString(), color: "#1E88E5", pct: "100%" },
     { label: "Anomali Ekstrem", value: anomali.toLocaleString(), color: RISK_COLORS.Anomali, pct: ((anomali/total)*100).toFixed(2)+"%" },
-    { label: "Risiko Tinggi",   value: tinggi.toLocaleString(),  color: RISK_COLORS.Tinggi,  pct: ((tinggi/total)*100).toFixed(2)+"%"  },
-    { label: "Risiko Sedang",   value: sedang.toLocaleString(),  color: RISK_COLORS.Sedang,  pct: ((sedang/total)*100).toFixed(2)+"%"  },
-    { label: "Risiko Rendah",   value: rendah.toLocaleString(),  color: RISK_COLORS.Rendah,  pct: ((rendah/total)*100).toFixed(2)+"%"  },
+    { label: "Risiko Tinggi",  value: tinggi.toLocaleString(), color: RISK_COLORS.Tinggi,  pct: ((tinggi/total)*100).toFixed(2)+"%" },
+    { label: "Risiko Sedang",  value: sedang.toLocaleString(), color: RISK_COLORS.Sedang,  pct: ((sedang/total)*100).toFixed(2)+"%" },
+    { label: "Risiko Rendah",  value: rendah.toLocaleString(), color: RISK_COLORS.Rendah,  pct: ((rendah/total)*100).toFixed(2)+"%" },
   ];
 
   return (
-    <div className="min-h-screen font-sans py-10 px-4 md:px-8 bg-grid">
+    <div className="min-h-screen font-sans py-10 px-4 md:px-8 bg-slate-50/50 bg-grid">
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
@@ -73,9 +79,10 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
           ))}
         </div>
 
-        {/* CHARTS */}
+        {/* MAIN CHARTS GRID */}
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Donut */}
+
+          {/* Col 1: Donut + Narrative */}
           <div className="flex flex-col gap-6">
             <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
               className="glass rounded-3xl p-6 border border-white/60 hover-lift">
@@ -85,7 +92,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={pieData} innerRadius={55} outerRadius={85} paddingAngle={3} dataKey="value" stroke="none">
-                      {pieData.map((e) => <Cell key={e.name} fill={RISK_COLORS[e.name]} />)}
+                      {pieData.map((e) => <Cell key={e.name} fill={RISK_COLORS[e.name as keyof typeof RISK_COLORS]} />)}
                     </Pie>
                     <Tooltip content={<CustomTooltip />} />
                   </PieChart>
@@ -93,8 +100,8 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
               </div>
               <div className="grid grid-cols-2 gap-2 mt-2">
                 {pieData.map(d => (
-                  <div key={d.name} className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: RISK_LIGHT[d.name] }}>
-                    <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: RISK_COLORS[d.name] }} />
+                  <div key={d.name} className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: RISK_LIGHT[d.name as keyof typeof RISK_LIGHT] }}>
+                    <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: RISK_COLORS[d.name as keyof typeof RISK_COLORS] }} />
                     <span className="font-bold text-slate-700 font-sans">{d.name}</span>
                     <span className="text-slate-400 ml-auto font-sans">{((d.value/total)*100).toFixed(1)}%</span>
                   </div>
@@ -107,15 +114,15 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
               <h3 className="font-serif font-bold text-slate-800 text-lg mb-3">Insight Kunci</h3>
               <div className="space-y-4 text-sm font-sans text-slate-600 leading-relaxed">
                 <p className="p-3 bg-[#FFF3F0] rounded-xl border border-[#FF5722]/10 text-[#FF5722] font-bold">
-                  {((anomali/total)*100).toFixed(2)}% dari seluruh paket terdeteksi sebagai Anomali Ekstrem (skor &gt;= 90.16)
+                  ⚠ {((anomali/total)*100).toFixed(2)}% dari seluruh paket terdeteksi sebagai Anomali Ekstrem (skor ≥ 90.16)
                 </p>
+                <p>Total anggaran berisiko Tinggi–Anomali mencapai <strong className="text-slate-800">Rp {((metricsData?.total_anggaran || 1.2e14)/1e12).toFixed(1)} Triliun</strong>.</p>
                 <p>Akurasi model PICP Train: <strong className="text-slate-800">80.09%</strong> — Test: <strong className="text-slate-800">80.13%</strong>.</p>
-                <p>Anggaran berisiko Tinggi-Anomali mencapai <strong className="text-slate-800">Rp {((metricsData?.total_anggaran || 1.2e14)/1e12).toFixed(1)} Triliun</strong>.</p>
               </div>
             </motion.div>
           </div>
 
-          {/* Charts Right */}
+          {/* Col 2: Area Line Chart */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
               className="glass rounded-3xl p-6 border border-white/60 hover-lift">
@@ -135,7 +142,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                    <XAxis dataKey="bulan" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "#94a3b8" }} />
+                    <XAxis dataKey="bulan" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "#94a3b8", fontFamily: "var(--font-jakarta)" }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "#94a3b8" }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Area type="monotone" dataKey="Risiko Tinggi" stroke="#FF8A65" strokeWidth={2} fill="url(#gTinggi)" dot={false} />
@@ -148,7 +155,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
 
             <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
               className="glass rounded-3xl p-6 border border-white/60 hover-lift">
-              <h3 className="font-serif font-bold text-slate-800 text-lg mb-1">Sebaran Per Jenis Pengadaan</h3>
+              <h3 className="font-serif font-bold text-slate-800 text-lg mb-1">Sebaran per Jenis Pengadaan</h3>
               <p className="text-slate-400 text-xs font-sans mb-4">Volume risiko berdasarkan kategori pengadaan</p>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -156,10 +163,10 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} stroke="#e2e8f0" />
                     <XAxis type="number" hide />
                     <YAxis dataKey="kategori" type="category" axisLine={false} tickLine={false}
-                      tick={{ fontSize: 11, fill: "#64748b" }} width={130} />
+                      tick={{ fontSize: 11, fill: "#64748b", fontFamily: "var(--font-jakarta)" }} width={130} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontFamily: "var(--font-jakarta)", fontSize: 12 }} />
-                    <Bar dataKey="Anomali" stackId="a" fill={RISK_COLORS.Anomali} />
+                    <Bar dataKey="Anomali" stackId="a" fill={RISK_COLORS.Anomali} radius={[0,0,0,0]} />
                     <Bar dataKey="Tinggi"  stackId="a" fill={RISK_COLORS.Tinggi}  />
                     <Bar dataKey="Sedang"  stackId="a" fill={RISK_COLORS.Sedang}  />
                     <Bar dataKey="Rendah"  stackId="a" fill={RISK_COLORS.Rendah}  radius={[0,4,4,0]} />
@@ -173,3 +180,6 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
     </div>
   );
 }
+''')
+
+print("Step 3: InfografisClient done")
