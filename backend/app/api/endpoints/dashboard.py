@@ -3,7 +3,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.db.session import SessionLocal
 
+import time
+
 router = APIRouter()
+
+# In-memory cache for ultra-fast response
+_cache = {"metrics": None, "timestamp": 0}
+CACHE_TTL = 300  # Cache for 5 minutes
 
 def get_db():
     db = SessionLocal()
@@ -14,6 +20,11 @@ def get_db():
 
 @router.get("/metrics")
 def get_dashboard_metrics(db: Session = Depends(get_db)):
+    current_time = time.time()
+    
+    # Return from cache if valid
+    if _cache["metrics"] and (current_time - _cache["timestamp"] < CACHE_TTL):
+        return _cache["metrics"]
     # Using the existing procurement_anomalies table in test db
     total_anggaran_query = db.execute(text("SELECT SUM(pagu) FROM procurement_anomalies")).scalar()
     total_paket_query = db.execute(text("SELECT COUNT(*) FROM procurement_anomalies")).scalar()
@@ -27,7 +38,8 @@ def get_dashboard_metrics(db: Session = Depends(get_db)):
     # Chart 2: Budget Trend
     trend_data = db.execute(text("SELECT bulan_pemilihan, SUM(pagu) as pagu, SUM(p90) as p90 FROM procurement_anomalies GROUP BY bulan_pemilihan ORDER BY bulan_pemilihan")).fetchall()
     
-    return {
+    
+    result = {
         "total_anggaran": float(total_anggaran_query or 0),
         "total_paket": total_paket_query or 0,
         "risiko_tinggi": risiko_tinggi_query or 0,
@@ -45,3 +57,9 @@ def get_dashboard_metrics(db: Session = Depends(get_db)):
             "p90": [float(row[2] or 0) for row in trend_data]
         }
     }
+    
+    # Save to cache
+    _cache["metrics"] = result
+    _cache["timestamp"] = current_time
+    
+    return result
