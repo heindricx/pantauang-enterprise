@@ -1,4 +1,28 @@
-"use client";
+import os
+
+frontend_app_dir = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+# PetaClient.tsx (Capitalize headers)
+peta_file = os.path.join(frontend_app_dir, "peta/PetaClient.tsx")
+with open(peta_file, "r") as f:
+    peta_content = f.read()
+peta_content = peta_content.replace("uppercase text-slate-800", "capitalize text-slate-800")
+with open(peta_file, "w") as f:
+    f.write(peta_content)
+
+# InfografisClient.tsx (Capitalize headers)
+info_file = os.path.join(frontend_app_dir, "infografis/InfografisClient.tsx")
+with open(info_file, "r") as f:
+    info_content = f.read()
+info_content = info_content.replace("uppercase text-slate-900", "capitalize text-slate-900")
+info_content = info_content.replace("uppercase text-slate-800", "capitalize text-slate-800")
+info_content = info_content.replace("uppercase", "capitalize")
+with open(info_file, "w") as f:
+    f.write(info_content)
+
+# DataClient.tsx
+with open(os.path.join(frontend_app_dir, "data/DataClient.tsx"), "w") as f:
+    f.write('''"use client";
 import { useState, useMemo } from "react";
 import {
   createColumnHelper,
@@ -321,3 +345,6 @@ function FilterGroup({ title, field, options, activeFilters, onToggle }: { title
   );
 }
 import React from 'react';
+''')
+
+print("Step 3 done")

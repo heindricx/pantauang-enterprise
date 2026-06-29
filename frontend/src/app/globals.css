@@ -4,18 +4,15 @@
   :root {
     --background: #f8fafc;
     --foreground: #1e293b;
-    
     --cp-blue: #1E88E5;      
     --cp-coral: #FF8A65;     
     --cp-purple: #7E57C2;    
     --cp-orange: #FF5722;    
     --cp-cyan: #26C6DA;      
   }
-  
   html {
     scroll-behavior: smooth;
   }
-  
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -24,7 +21,7 @@
 }
 
 .font-sans {
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-jakarta), sans-serif;
 }
 
 .font-serif {

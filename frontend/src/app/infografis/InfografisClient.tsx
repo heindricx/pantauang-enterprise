@@ -15,7 +15,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
     <div className="h-full overflow-auto flex flex-col md:flex-row bg-white">
       {/* Left Pane: Narrative */}
       <div className="w-full md:w-1/3 p-8 md:p-12 border-r border-slate-200 flex flex-col justify-center shrink-0">
-        <h1 className="font-serif font-black text-[clamp(2rem,5vw,4rem)] uppercase text-slate-900 mb-6 tracking-tighter leading-[1.1]">
+        <h1 className="font-serif font-black text-[clamp(2rem,5vw,4rem)] capitalize text-slate-900 mb-6 tracking-tighter leading-[1.1]">
           Systematic <br/><span className="text-[#FF5722]">Deviation</span> <br/>Analytics.
         </h1>
         <div className="space-y-6 text-slate-600 text-[clamp(1rem,1.5vw,1.125rem)] leading-relaxed font-sans">
@@ -33,7 +33,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
         
         {/* Risk Breakdown Pie */}
         <div className="tech-border rounded-xl p-6 bg-white">
-          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 uppercase">Distribusi 4 Kategori Risiko</h3>
+          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 capitalize">Distribusi 4 Kategori Risiko</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -51,7 +51,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
 
         {/* Time Series Area Chart */}
         <div className="tech-border rounded-xl p-6 bg-white">
-          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 uppercase">Tren Musiman (12 Bulan)</h3>
+          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 capitalize">Tren Musiman (12 Bulan)</h3>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={timeSeries} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -79,7 +79,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
 
         {/* Stacked Bar Chart */}
         <div className="tech-border rounded-xl p-6 bg-white">
-          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 uppercase">Sebaran Berdasarkan Jenis Pengadaan</h3>
+          <h3 className="font-serif text-lg font-bold text-slate-800 mb-4 capitalize">Sebaran Berdasarkan Jenis Pengadaan</h3>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={jenisPengadaan} layout="vertical" margin={{ top: 20, right: 30, left: 40, bottom: 5 }}>

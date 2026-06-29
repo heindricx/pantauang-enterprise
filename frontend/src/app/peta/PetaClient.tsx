@@ -108,7 +108,7 @@ export default function PetaClient({ initialRegions }: { initialRegions: any[] }
       {/* Container header diluar map agar tidak tertumpuk */}
       <div className="bg-white px-6 py-4 border-b border-slate-200 z-10 flex flex-col md:flex-row items-center justify-between shadow-sm shrink-0">
         <div className="text-center md:text-left mb-4 md:mb-0 w-full md:w-auto">
-          <h1 className="font-serif font-black text-2xl uppercase text-slate-800">Peta Sebaran Risiko</h1>
+          <h1 className="font-serif font-black text-2xl capitalize text-slate-800">Peta Sebaran Risiko</h1>
           <p className="text-slate-500 text-sm font-sans mt-1">Pilih kategori untuk melihat gradasi wilayah</p>
         </div>
         
