@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: pantauang-backend
+    env: docker
+    region: singapore
+    plan: free
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: TIDB_PASSWORD
+        sync: false # Set via Render Dashboard
