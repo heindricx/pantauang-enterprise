@@ -1,4 +1,9 @@
-"use client";
+import os
+
+frontend_app_dir = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+with open(os.path.join(frontend_app_dir, "HomeClient.tsx"), "w") as f:
+    f.write('''"use client";
 import { motion } from "framer-motion";
 import { Activity, Database, AlertOctagon, TrendingUp, Cpu, GitMerge, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -68,3 +73,6 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
     </div>
   );
 }
+''')
+
+print("Home CTA updated")

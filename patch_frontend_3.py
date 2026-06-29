@@ -1,4 +1,93 @@
-"use client";
+import os
+
+frontend_app_dir = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+frontend_components_dir = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\components"
+
+# 1. layout.tsx - Remove Plus Jakarta Sans, use Segoe UI
+with open(os.path.join(frontend_app_dir, "layout.tsx"), "w") as f:
+    f.write('''import type { Metadata } from "next";
+import { Playfair_Display } from "next/font/google";
+import "./globals.css";
+import { Navbar } from "@/components/layout/Navbar";
+
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+
+export const metadata: Metadata = {
+  title: "PantaUang Kita | Intelligence Dashboard",
+  description: "Government Intelligence Dashboard for public procurement anomaly detection.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="id" className={`light ${playfair.variable}`}>
+      <body className="font-sans bg-slate-50 text-slate-800 overflow-hidden flex flex-col h-screen">
+        <Navbar />
+        <main className="flex-1 relative overflow-auto bg-slate-50 w-full">
+          {children}
+        </main>
+      </body>
+    </html>
+  );
+}
+''')
+
+# 2. globals.css - Add Segoe UI
+with open(os.path.join(frontend_app_dir, "globals.css"), "w") as f:
+    f.write('''@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #1e293b;
+    
+    --cp-blue: #1E88E5;      
+    --cp-coral: #FF8A65;     
+    --cp-purple: #7E57C2;    
+    --cp-orange: #FF5722;    
+    --cp-cyan: #26C6DA;      
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    overflow-x: hidden;
+  }
+}
+
+.font-sans {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), serif;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tech-border {
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    background: #ffffff;
+}
+''')
+
+# 3. PetaClient.tsx - Fix Choropleth math, add Legend, move title outside
+with open(os.path.join(frontend_app_dir, "peta/PetaClient.tsx"), "w") as f:
+    f.write('''"use client";
 import Map, { NavigationControl, Source, Layer } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useState, useMemo, useEffect } from "react";
@@ -172,3 +261,6 @@ export default function PetaClient({ initialRegions }: { initialRegions: any[] }
     </div>
   );
 }
+''')
+
+print("Patch applied")
