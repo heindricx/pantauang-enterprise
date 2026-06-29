@@ -7,7 +7,7 @@ export default function DashboardHome() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://heindricx-pantauang-backend.hf.space")
+    fetch("https://heindricx-pantauang-backend.hf.space/dashboard/metrics")
       .then(res => res.json())
       .then(data => {
         setMetrics(data);
@@ -34,10 +34,10 @@ export default function DashboardHome() {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm h-96 flex items-center justify-center">
-          <RiskDistributionChart />
+          <RiskDistributionChart data={metrics?.risk_distribution || []} />
         </div>
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm h-96 flex items-center justify-center">
-          <BudgetTrendChart />
+          <BudgetTrendChart data={metrics?.budget_trend || {months: [], pagu: [], p90: []}} />
         </div>
       </div>
     </div>
