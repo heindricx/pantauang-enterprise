@@ -1,194 +1,96 @@
 "use client";
-import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
-import { ArrowRight, Activity, ShieldAlert, Cpu, BarChart3, Database } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Activity, Database, AlertOctagon, TrendingUp, Cpu, GitMerge } from "lucide-react";
 
-export default function LandingPage() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  
-  // Parallax effects
-  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, 150]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+export default function Home() {
+  const [ticker, setTicker] = useState([]);
+  const [metrics, setMetrics] = useState<any>(null);
+
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    // Fetch Ticker
+    fetch(`${apiUrl}/api/ticker`).then(res => res.json()).then(setTicker).catch(console.error);
+    // Fetch Metrics
+    fetch(`${apiUrl}/dashboard/metrics`).then(res => res.json()).then(setMetrics).catch(console.error);
+  }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen selection:bg-blue-200">
-      
-      {/* Animated Subtle Ambient Background (Not Plain White) */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-tr from-[#eef2f3] to-[#8e9eab] opacity-30 blur-[120px] mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }}></div>
-        <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-gradient-to-tr from-[#52C7D8]/20 to-[#0D5CBD]/10 opacity-40 blur-[120px] mix-blend-multiply animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }}></div>
-        <div className="absolute bottom-[-10%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tr from-[#F28A6A]/10 to-[#FF7A3D]/10 opacity-40 blur-[120px] mix-blend-multiply animate-pulse" style={{ animationDuration: '10s', animationDelay: '4s' }}></div>
+    <div className="h-full overflow-auto flex flex-col">
+      {/* 1. Ticker Banner */}
+      <div className="h-10 bg-black/80 border-b border-red-900/50 flex items-center overflow-hidden">
+        <div className="flex px-4 items-center bg-red-950/80 h-full border-r border-red-900/50 z-10 font-bold text-xs text-red-500 uppercase tracking-widest whitespace-nowrap shadow-[0_0_10px_rgba(239,68,68,0.2)]">
+          <Activity className="w-4 h-4 mr-2 animate-pulse" /> Live Extreme Anomalies
+        </div>
+        <div className="flex-1 overflow-hidden relative">
+          <div className="animate-[marquee_20s_linear_infinite] whitespace-nowrap flex gap-10 absolute">
+            {ticker.length > 0 ? ticker.map((t: any, i) => (
+              <span key={i} className="text-red-400 font-mono text-xs">
+                [{t.score.toFixed(2)}] {t.agenda} - Rp {(t.pagu/1e9).toFixed(2)}M
+              </span>
+            )) : <span className="text-slate-600 font-mono text-xs">AWAITING TELEMETRY...</span>}
+          </div>
+        </div>
       </div>
 
-      {/* Navbar Glass */}
-      <nav className="fixed top-0 w-full z-50 glass-panel border-b-0 border-x-0 border-t-0 bg-white/40 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-bold text-xl tracking-tight text-slate-800">PantaUang<span className="text-[#0D5CBD]">.</span></span>
-          <div className="flex gap-4">
-            <Link href="/dashboard" className="px-5 py-2 text-sm font-medium text-slate-800 hover:text-[#0D5CBD] transition-colors">Dasbor</Link>
-            <Link href="/dashboard" className="px-5 py-2 text-sm font-medium bg-[#1D1D1F] hover:bg-black text-white rounded-full transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Mulai Eksplorasi</Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* 1. HERO SECTION */}
-      <motion.section 
-        style={{ y: heroY, opacity: heroOpacity }}
-        className="relative pt-40 pb-32 px-6 flex flex-col items-center justify-center text-center min-h-[90vh]"
-      >
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl"
-        >
-          <span className="inline-block py-1 px-3 rounded-full bg-blue-50 border border-blue-100 text-[#0D5CBD] text-sm font-semibold mb-6 tracking-wide uppercase">
-            Platform Generasi Baru 2026
-          </span>
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight mb-8 text-gradient">
-            Intelijen Pengadaan.<br/>Sangat Presisi.
-          </h1>
-          <p className="text-xl md:text-2xl font-medium text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Menyelami 3 Juta data lelang nasional menggunakan model AI Distil-IndoBERT. Mengendus potensi risiko hingga ke akar dengan estetika tanpa kompromi.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-            <Link href="/dashboard" className="group flex items-center gap-2 px-8 py-4 bg-[#1D1D1F] hover:bg-black text-white rounded-full font-semibold text-lg transition-all shadow-xl hover:shadow-2xl transform hover:scale-105">
-              Masuk ke Dasbor
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link href="#features" className="px-8 py-4 bg-white/50 backdrop-blur-md border border-slate-200 hover:border-slate-300 hover:bg-white text-slate-700 rounded-full font-semibold text-lg transition-all shadow-sm hover:shadow-md">
-              Pelajari Lebih Lanjut
-            </Link>
-          </div>
-        </motion.div>
-      </motion.section>
-
-      {/* 2. STATS SHOWCASE */}
-      <section className="py-24 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="glass-panel rounded-3xl p-10 md:p-16 flex flex-col md:flex-row justify-between items-center gap-10"
-          >
-            <div className="text-center md:text-left">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gradient-brand">3.000.000+</h2>
-              <p className="text-lg text-slate-500 font-medium">Baris Data Dianalisis</p>
-            </div>
-            <div className="w-px h-16 bg-slate-200 hidden md:block"></div>
-            <div className="text-center md:text-left">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gradient-brand">&lt; 10 ms</h2>
-              <p className="text-lg text-slate-500 font-medium">Waktu Respons Agregasi</p>
-            </div>
-            <div className="w-px h-16 bg-slate-200 hidden md:block"></div>
-            <div className="text-center md:text-left">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gradient-brand">99.9%</h2>
-              <p className="text-lg text-slate-500 font-medium">Uptime Serverless</p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 3. FEATURES SECTION */}
-      <section id="features" className="py-32 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-5xl font-bold tracking-tight mb-6">Kemampuan Luar Biasa.<br/>Dalam Balutan Kesederhanaan.</h2>
-            <p className="text-xl text-slate-500 max-w-3xl mx-auto">Semua teknologi mutakhir disembunyikan di balik antarmuka yang sangat bersih dan intuitif, dirancang khusus untuk pengambil keputusan.</p>
+      {/* 2. Hero Mission Control */}
+      <div className="flex-1 p-8 md:p-12 relative flex flex-col justify-center">
+        {/* Abstract Network Background */}
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" 
+             style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #0D5CBD 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        
+        <div className="z-10 w-full max-w-7xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white mb-4 uppercase">
+              Intelligence <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0D5CBD] to-[#52C7D8]">Node.</span>
+            </h1>
+            <p className="text-slate-400 font-mono text-sm md:text-base max-w-2xl border-l-2 border-[#0D5CBD] pl-4">
+              PantaUang Kita Enterprise Architecture. Powered by Distil-IndoBERT and Quantile Regression LightGBM (QRLGBM) for public procurement anomaly detection.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<ShieldAlert className="w-8 h-8 text-[#F28A6A]" />}
-              title="Deteksi Risiko P90"
-              desc="Model QRLGBM secara otomatis memprediksi batas kewajaran harga P90 dan mendeteksi anomali mark-up."
-              delay={0.1}
-            />
-            <FeatureCard 
-              icon={<Cpu className="w-8 h-8 text-[#8A63E8]" />}
-              title="AI Semantic Analysis"
-              desc="Distil-IndoBERT membaca dokumen pengadaan bagaikan manusia untuk memahami konteks dan risiko tersembunyi."
-              delay={0.2}
-            />
-            <FeatureCard 
-              icon={<Database className="w-8 h-8 text-[#0D5CBD]" />}
-              title="TiDB HTAP Engine"
-              desc="Mengakses jutaan baris data historis secara instan berkat infrastruktur TiDB Serverless."
-              delay={0.3}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 4. LARGE PREVIEW SECTION */}
-      <section className="py-24 px-6 relative z-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative rounded-[2.5rem] overflow-hidden glass-card p-4 md:p-8 border border-slate-200/50"
-          >
-            {/* Mockup Window */}
-            <div className="w-full rounded-2xl bg-white/80 border border-slate-100 shadow-2xl overflow-hidden aspect-[16/9] md:aspect-[21/9] flex flex-col">
-              <div className="h-10 bg-slate-100/50 border-b border-slate-200 flex items-center px-4 gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-              </div>
-              <div className="flex-1 p-8 flex items-center justify-center bg-slate-50/50">
-                <BarChart3 className="w-32 h-32 text-slate-300 opacity-50" />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div className="tech-border p-6 rounded-lg border-l-4 border-l-[#0D5CBD]">
+              <div className="flex items-center gap-3 mb-2 text-slate-400 font-mono text-xs uppercase"><Database className="w-4 h-4" /> Data Latih & Uji</div>
+              <div className="text-4xl font-black font-mono text-white">{metrics?.total_data_exact?.toLocaleString() || "..."}</div>
             </div>
-          </motion.div>
+            <div className="tech-border p-6 rounded-lg border-l-4 border-l-[#52C7D8]">
+              <div className="flex items-center gap-3 mb-2 text-slate-400 font-mono text-xs uppercase"><TrendingUp className="w-4 h-4" /> Total Budget Evaluated</div>
+              <div className="text-4xl font-black font-mono text-white">Rp {metrics?.total_anggaran ? (metrics.total_anggaran / 1e12).toFixed(2) : "..."} T</div>
+            </div>
+            <div className="tech-border p-6 rounded-lg border-l-4 border-l-red-500 shadow-[0_0_20px_rgba(239,68,68,0.1)]">
+              <div className="flex items-center gap-3 mb-2 text-red-400 font-mono text-xs uppercase"><AlertOctagon className="w-4 h-4" /> Extreme Anomaly Ratio</div>
+              <div className="text-4xl font-black font-mono text-red-500">{metrics?.anomaly_ratio ? metrics.anomaly_ratio + "%" : "..."}</div>
+            </div>
+          </div>
+
+          {/* Stepper */}
+          <div className="mt-8">
+            <h3 className="text-xs font-mono text-slate-500 mb-6 uppercase tracking-widest">Scientific Methodology Pipeline</h3>
+            <div className="flex flex-col md:flex-row gap-4 items-center w-full">
+              {[
+                { icon: Database, label: "Data RUP Input" },
+                { icon: Cpu, label: "Distil-IndoBERT + PCA" },
+                { icon: GitMerge, label: "Integrasi Fitur" },
+                { icon: Activity, label: "QRLGBM Modeling" },
+                { icon: AlertOctagon, label: "Risk Categorization" }
+              ].map((step, idx, arr) => (
+                <div key={idx} className="flex items-center w-full md:w-auto flex-1">
+                  <div className="tech-border px-4 py-3 rounded text-center flex-1 min-w-max flex flex-col items-center gap-2">
+                    <step.icon className="w-5 h-5 text-slate-400" />
+                    <span className="text-[10px] font-mono text-slate-300 uppercase">{step.label}</span>
+                  </div>
+                  {idx < arr.length - 1 && <div className="h-8 w-px md:h-px md:w-8 bg-slate-700 mx-2"></div>}
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
-      </section>
-
-      {/* 5. CTA SECTION */}
-      <section className="py-40 px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">Siap Mengambil Kendali?</h2>
-          <Link href="/dashboard" className="inline-block px-12 py-5 bg-[#1D1D1F] hover:bg-black text-white rounded-full font-bold text-xl transition-all shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform hover:scale-105">
-            Buka PantaUang Dashboard
-          </Link>
-        </motion.div>
-      </section>
-
+      </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+      `}} />
     </div>
-  );
-}
-
-function FeatureCard({ icon, title, desc, delay }: { icon: React.ReactNode, title: string, desc: string, delay: number }) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay }}
-      className="glass-card p-10 rounded-3xl flex flex-col h-full"
-    >
-      <div className="w-16 h-16 rounded-2xl bg-white border border-slate-100 flex items-center justify-center mb-6 shadow-sm">
-        {icon}
-      </div>
-      <h3 className="text-2xl font-bold mb-4 text-slate-800">{title}</h3>
-      <p className="text-slate-500 font-medium leading-relaxed">{desc}</p>
-    </motion.div>
   );
 }

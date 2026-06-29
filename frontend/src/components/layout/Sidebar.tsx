@@ -1,60 +1,53 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Database, Map, BarChart2, AlertTriangle, Cpu, FileText, Settings, LogOut } from "lucide-react";
+import { Home, PieChart, Map, Database, FileText } from "lucide-react";
 
 export function Sidebar() {
   const pathname = usePathname();
   
   const menuItems = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Data Pengadaan", href: "/procurement", icon: Database },
-    { name: "Peta Risiko", href: "/risk-map", icon: Map },
-    { name: "Analitik", href: "/analytics", icon: BarChart2 },
-    { name: "Anomali", href: "/anomalies", icon: AlertTriangle },
-    { name: "Model AI", href: "/ml", icon: Cpu },
+    { name: "Home", href: "/", icon: Home },
+    { name: "Infografis", href: "/infografis", icon: PieChart },
+    { name: "Peta", href: "/peta", icon: Map },
+    { name: "Data", href: "/data", icon: Database },
+    { name: "About", href: "/about", icon: FileText },
   ];
 
   return (
-    <aside className="w-72 h-screen p-4 flex flex-col fixed left-0 top-0 z-40">
-      <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col shadow-lg">
-        
-        <div className="h-24 flex flex-col justify-center px-8 border-b border-white/20">
-          <span className="font-extrabold text-2xl tracking-tight text-slate-800">
-            PantaUang<span className="text-[#0D5CBD]">.</span>
-          </span>
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1">Enterprise</span>
-        </div>
-        
-        <nav className="flex-1 py-6 overflow-y-auto px-4 custom-scrollbar">
-          <ul className="space-y-2">
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <li key={item.name}>
-                  <Link 
-                    href={item.href} 
-                    className={`flex items-center px-4 py-3.5 rounded-2xl transition-all duration-300 font-medium text-sm group ${
-                      isActive 
-                      ? "bg-white/80 text-[#0D5CBD] shadow-sm border border-white" 
-                      : "text-slate-600 hover:bg-white/40 hover:text-slate-900"
-                    }`}
-                  >
-                    <item.icon className={`w-5 h-5 mr-3 transition-colors ${isActive ? "text-[#0D5CBD]" : "text-slate-400 group-hover:text-slate-700"}`} />
-                    {item.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-        
-        <div className="p-4 border-t border-white/20">
-          <Link href="/" className="flex items-center justify-center w-full px-4 py-3 rounded-2xl bg-white/50 text-slate-600 font-medium text-sm hover:bg-white transition-all shadow-sm">
-            <LogOut className="w-4 h-4 mr-2" /> Keluar
-          </Link>
-        </div>
-
+    <aside className="w-20 md:w-64 h-screen bg-[#070b14] border-r border-slate-800 flex flex-col fixed left-0 top-0 z-50">
+      <div className="h-20 flex items-center justify-center md:justify-start md:px-8 border-b border-slate-800">
+        <span className="font-extrabold text-2xl tracking-tighter text-white hidden md:block">
+          Panta<span className="text-[#0D5CBD]">Uang</span>
+        </span>
+        <span className="font-extrabold text-2xl text-white md:hidden">P</span>
+      </div>
+      
+      <nav className="flex-1 py-8 px-4">
+        <ul className="space-y-3">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <li key={item.name}>
+                <Link 
+                  href={item.href} 
+                  className={`flex items-center justify-center md:justify-start px-3 py-3 rounded-lg transition-all duration-200 font-medium text-sm group ${
+                    isActive 
+                    ? "bg-[#0D5CBD]/20 text-white border border-[#0D5CBD]/50 shadow-[0_0_15px_rgba(13,92,189,0.2)]" 
+                    : "text-slate-400 hover:bg-slate-900 hover:text-slate-100"
+                  }`}
+                >
+                  <item.icon className={`w-5 h-5 md:mr-3 ${isActive ? "text-[#52C7D8]" : "text-slate-500 group-hover:text-slate-300"}`} />
+                  <span className="hidden md:block">{item.name}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      
+      <div className="p-4 border-t border-slate-800 text-center md:text-left text-xs font-mono text-slate-600">
+        <span className="hidden md:inline">SYSTEM.ONLINE //</span><br className="hidden md:block"/>v2.0.0.941
       </div>
     </aside>
   );

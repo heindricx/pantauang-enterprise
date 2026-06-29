@@ -1,17 +1,15 @@
 @import "tailwindcss";
 
-@theme {
-  --color-brand-blue: #0D5CBD;
-  --color-brand-semantic: #F28A6A;
-  --color-brand-integration: #52C7D8;
-  --color-brand-ml: #8A63E8;
-  --color-brand-insight: #FF7A3D;
-}
-
 @layer base {
   :root {
-    --background: #FDFBF7; /* Sangat elegan, off-white ke arah krem super lembut */
-    --foreground: #1D1D1F; /* Apple standard dark text */
+    --background: #0a0f18; /* Palantir-esque deep slate */
+    --foreground: #e2e8f0;
+    
+    /* Risk Levels */
+    --risk-extreme: #ef4444; /* Crimson Red */
+    --risk-high: #f97316; /* Orange */
+    --risk-medium: #eab308; /* Yellow */
+    --risk-low: #22c55e; /* Green */
   }
   
   html {
@@ -25,41 +23,18 @@
   }
 }
 
-/* Custom Glassmorphism Utilities */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.glass-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
-  border-color: rgba(13, 92, 189, 0.2);
-}
-
-/* Fluid Apple-like text gradient */
-.text-gradient {
-  background: linear-gradient(135deg, #1D1D1F 0%, #434344 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-brand {
-  background: linear-gradient(135deg, #0D5CBD 0%, #8A63E8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Palantir style borders and glows */
+.tech-border {
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
 }
