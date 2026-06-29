@@ -1,4 +1,81 @@
-"use client";
+import os
+
+frontend_src_dir = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src"
+
+# 1. Update globals.css to include custom animations and styles
+globals_css = os.path.join(frontend_src_dir, "app/globals.css")
+with open(globals_css, "w") as f:
+    f.write('''@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #0D5CBD;
+  --color-brand-semantic: #F28A6A;
+  --color-brand-integration: #52C7D8;
+  --color-brand-ml: #8A63E8;
+  --color-brand-insight: #FF7A3D;
+}
+
+@layer base {
+  :root {
+    --background: #FDFBF7; /* Sangat elegan, off-white ke arah krem super lembut */
+    --foreground: #1D1D1F; /* Apple standard dark text */
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+  border-color: rgba(13, 92, 189, 0.2);
+}
+
+/* Fluid Apple-like text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #1D1D1F 0%, #434344 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #0D5CBD 0%, #8A63E8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+''')
+
+# 2. Update page.tsx (The massive scrolling landing page)
+page_tsx = os.path.join(frontend_src_dir, "app/page.tsx")
+with open(page_tsx, "w") as f:
+    f.write('''"use client";
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
@@ -192,3 +269,188 @@ function FeatureCard({ icon, title, desc, delay }: { icon: React.ReactNode, titl
     </motion.div>
   );
 }
+''')
+
+# 3. Sidebar.tsx (Dashboard UI Refactor)
+sidebar_tsx = os.path.join(frontend_src_dir, "components/layout/Sidebar.tsx")
+with open(sidebar_tsx, "w") as f:
+    f.write('''"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { LayoutDashboard, Database, Map, BarChart2, AlertTriangle, Cpu, FileText, Settings, LogOut } from "lucide-react";
+
+export function Sidebar() {
+  const pathname = usePathname();
+  
+  const menuItems = [
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Data Pengadaan", href: "/procurement", icon: Database },
+    { name: "Peta Risiko", href: "/risk-map", icon: Map },
+    { name: "Analitik", href: "/analytics", icon: BarChart2 },
+    { name: "Anomali", href: "/anomalies", icon: AlertTriangle },
+    { name: "Model AI", href: "/ml", icon: Cpu },
+  ];
+
+  return (
+    <aside className="w-72 h-screen p-4 flex flex-col fixed left-0 top-0 z-40">
+      <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col shadow-lg">
+        
+        <div className="h-24 flex flex-col justify-center px-8 border-b border-white/20">
+          <span className="font-extrabold text-2xl tracking-tight text-slate-800">
+            PantaUang<span className="text-[#0D5CBD]">.</span>
+          </span>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1">Enterprise</span>
+        </div>
+        
+        <nav className="flex-1 py-6 overflow-y-auto px-4 custom-scrollbar">
+          <ul className="space-y-2">
+            {menuItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <li key={item.name}>
+                  <Link 
+                    href={item.href} 
+                    className={`flex items-center px-4 py-3.5 rounded-2xl transition-all duration-300 font-medium text-sm group ${
+                      isActive 
+                      ? "bg-white/80 text-[#0D5CBD] shadow-sm border border-white" 
+                      : "text-slate-600 hover:bg-white/40 hover:text-slate-900"
+                    }`}
+                  >
+                    <item.icon className={`w-5 h-5 mr-3 transition-colors ${isActive ? "text-[#0D5CBD]" : "text-slate-400 group-hover:text-slate-700"}`} />
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        
+        <div className="p-4 border-t border-white/20">
+          <Link href="/" className="flex items-center justify-center w-full px-4 py-3 rounded-2xl bg-white/50 text-slate-600 font-medium text-sm hover:bg-white transition-all shadow-sm">
+            <LogOut className="w-4 h-4 mr-2" /> Keluar
+          </Link>
+        </div>
+
+      </div>
+    </aside>
+  );
+}
+''')
+
+# 4. dashboard/layout.tsx Refactor to fit the new floating sidebar
+dashboard_layout = os.path.join(frontend_src_dir, "app/dashboard/layout.tsx")
+with open(dashboard_layout, "w") as f:
+    f.write('''import { Sidebar } from "@/components/layout/Sidebar";
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex h-screen bg-[#FDFBF7] overflow-hidden relative">
+      {/* Subtle background element for dashboard */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-blue-100/40 to-transparent rounded-full blur-[100px] -z-10 pointer-events-none" />
+      
+      <Sidebar />
+      
+      <div className="flex-1 flex flex-col ml-72">
+        <header className="h-24 flex items-end pb-4 px-10 z-10">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-800">Ringkasan Eksekutif</h2>
+        </header>
+        <main className="flex-1 overflow-auto p-10 pt-4 pb-24">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
+''')
+
+# 5. Fix dashboard/page.tsx MetricCards to use framer-motion and glassmorphism
+dashboard_page = os.path.join(frontend_src_dir, "app/dashboard/page.tsx")
+with open(dashboard_page, "w") as f:
+    f.write('''"use client";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { RiskDistributionChart, BudgetTrendChart } from "@/components/dashboard/RiskCharts";
+
+export default function DashboardHome() {
+  const [metrics, setMetrics] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${apiUrl}/dashboard/metrics`)
+      .then(res => res.json())
+      .then(data => {
+        setMetrics(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return (
+    <div className="h-full flex items-center justify-center">
+      <div className="animate-pulse flex flex-col items-center">
+        <div className="w-12 h-12 rounded-full border-4 border-t-[#0D5CBD] border-slate-200 animate-spin mb-4"></div>
+        <p className="text-slate-500 font-medium">Sinkronisasi Jutaan Data TiDB...</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="space-y-8"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <MetricCard delay={0.1} title="Total Anggaran" value={metrics?.total_anggaran ? `Rp ${(metrics.total_anggaran / 1e12).toFixed(2)} Triliun` : "-"} color="bg-[#0D5CBD]" />
+        <MetricCard delay={0.2} title="Total Paket" value={metrics?.total_paket?.toLocaleString() || "-"} color="bg-[#52C7D8]" />
+        <MetricCard delay={0.3} title="Risiko Tinggi" value={metrics?.risiko_tinggi?.toLocaleString() || "-"} color="bg-[#F28A6A]" />
+        <MetricCard delay={0.4} title="Potensi Anomali" value={metrics?.estimasi_potensi_anomali ? `Rp ${(metrics.estimasi_potensi_anomali / 1e9).toFixed(2)} Miliar` : "-"} color="bg-[#FF7A3D]" />
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="glass-card p-8 rounded-3xl h-[450px] flex items-center justify-center relative overflow-hidden group"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-100/50 rounded-full blur-[40px] group-hover:scale-150 transition-transform duration-700"></div>
+          <RiskDistributionChart data={metrics?.risk_distribution || []} />
+        </motion.div>
+        
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="glass-card p-8 rounded-3xl h-[450px] flex items-center justify-center relative overflow-hidden group"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-100/50 rounded-full blur-[40px] group-hover:scale-150 transition-transform duration-700"></div>
+          <BudgetTrendChart data={metrics?.budget_trend || {months: [], pagu: [], p90: []}} />
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+function MetricCard({ title, value, color, delay }: { title: string, value: string, color: string, delay: number }) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      className="glass-card p-6 rounded-3xl flex flex-col justify-between min-h-[160px] relative overflow-hidden group cursor-default"
+    >
+      <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full ${color} opacity-[0.03] group-hover:opacity-10 group-hover:scale-150 transition-all duration-700`}></div>
+      <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">{title}</p>
+      <h3 className="text-3xl lg:text-4xl font-bold tracking-tight text-slate-800 mt-2">{value}</h3>
+    </motion.div>
+  );
+}
+''')
+
+print("UI/UX Refactor Applied!")
