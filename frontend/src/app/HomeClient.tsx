@@ -90,26 +90,26 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
         <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-[#1E88E5]/8 blur-3xl pointer-events-none" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-[#7E57C2]/8 blur-3xl pointer-events-none" />
 
-        <div className="max-w-6xl mx-auto w-full">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+        <div className="max-w-4xl mx-auto w-full text-center">
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-full">
               <motion.div variants={fadeUp} custom={0} initial="hidden" animate="visible"
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1E88E5]/10 border border-[#1E88E5]/20 text-[#1E88E5] text-xs font-bold font-sans mb-6">
+                className="inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-[#1E88E5]/10 border border-[#1E88E5]/20 text-[#1E88E5] text-xs font-bold font-sans mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1E88E5] animate-pulse" />
                 Live — 3.009.417 Data Dianalisis
               </motion.div>
 
               <motion.h1 variants={fadeUp} custom={1} initial="hidden" animate="visible"
-                className="font-serif font-black text-[clamp(2.5rem,5vw,4.5rem)] text-slate-900 leading-[1.1] tracking-tight">
+                className="font-serif font-black text-[clamp(2.8rem,6vw,5rem)] text-slate-900 leading-[1.1] tracking-tight">
                 Selamat datang di <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E88E5] to-[#42A5F5]">PantaUang</span>
               </motion.h1>
 
               <motion.p variants={fadeUp} custom={2} initial="hidden" animate="visible"
-                className="text-slate-500 font-sans text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+                className="text-slate-500 font-sans text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mt-6 mb-8">
                 Platform PantaUang menyediakan analisis risiko pengadaan barang dan jasa pemerintah menggunakan metode machine learning.
               </motion.p>
 
-              <motion.div variants={fadeUp} custom={3} initial="hidden" animate="visible" className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+              <motion.div variants={fadeUp} custom={3} initial="hidden" animate="visible" className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                 <Link href="/data" className="group px-8 py-4 bg-slate-900 text-white rounded-full font-bold font-sans hover:bg-slate-800 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-1">
                   Cek Data Risiko <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -118,32 +118,6 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
                 </Link>
               </motion.div>
             </div>
-
-            {/* Smooth Reveal Pie Chart */}
-            <motion.div variants={fadeUp} custom={2} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.8, delay: 0.2, ease: "easeOut" } }}
-              className="glass rounded-3xl p-8 shadow-xl border border-white/60 hover-lift">
-              <h3 className="font-serif text-lg font-bold text-slate-800 mb-1">Distribusi Kategori Risiko</h3>
-              <p className="text-slate-400 text-xs font-sans mb-4">Berdasarkan skor QRLGBM — 3.009.417 paket</p>
-              <div className="h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={pieData} innerRadius={60} outerRadius={90} paddingAngle={3} dataKey="value" stroke="none" isAnimationActive={true} animationDuration={1500} animationEasing="ease-out">
-                      {pieData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
-                    </Pie>
-                    <Tooltip contentStyle={{ borderRadius: "10px", border: "none", boxShadow: "0 8px 24px rgba(0,0,0,0.1)", fontFamily: "var(--font-jakarta)", fontSize: "12px" }}
-                      formatter={(val: any, name: any) => [`${val.toLocaleString("id-ID")} paket`, name]} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center mt-2">
-                {Object.entries(RISK_COLORS).map(([k, c]) => (
-                  <div key={k} className="flex items-center gap-1.5 text-xs font-sans font-bold text-slate-600">
-                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: c }} />
-                    {k}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
           </div>
 
           {/* Animated Stat Cards */}
