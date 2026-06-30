@@ -26,7 +26,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function InfografisClient({ metricsData, timeSeries, jenisPengadaan }: {
   metricsData: any; timeSeries: any[]; jenisPengadaan: any[];
 }) {
-  const total   = metricsData?.total_paket || 3009417;
+  const total   = 3009417;
   const anomali = metricsData?.ekstrem || 75120;
   const tinggi  = metricsData?.risiko_tinggi || 149871;
   const sedang  = Math.floor(total * 0.15);
@@ -57,7 +57,7 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
             Systematic <span className="text-[#FF5722]">Deviation</span> Analytics
           </h1>
           <p className="text-slate-500 font-sans text-sm mt-3 max-w-2xl mx-auto">
-            Dari {(metricsData?.total_data_exact || 3009417).toLocaleString()} paket pengadaan, sistem mengidentifikasi pola penyimpangan signifikan menggunakan QRLGBM.
+            Dari {total.toLocaleString()} paket pengadaan, sistem mengidentifikasi pola penyimpangan signifikan menggunakan QRLGBM.
           </p>
         </motion.div>
 
