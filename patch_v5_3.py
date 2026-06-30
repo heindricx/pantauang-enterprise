@@ -1,4 +1,9 @@
-"use client";
+"""Patch DataClient — fix data loading, use consistent 3.009.417 fallback, transparent header/footer"""
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+data_tsx = r'''"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronDown, ChevronRight, Search, Download, X, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft } from "lucide-react";
 import { ChevronRight as ChRight } from "lucide-react";
@@ -327,3 +332,9 @@ export default function DataClient({ filterOptions }: { filterOptions?: any }) {
     </div>
   );
 }
+'''
+
+with open(os.path.join(FRONTEND_APP, "data/DataClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(data_tsx)
+
+print("DataClient done")

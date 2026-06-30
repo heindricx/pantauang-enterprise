@@ -1,4 +1,10 @@
-"use client";
+"""Patch Peta (better frame with gradient fade) and DataClient (fix data loading fallback)"""
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+# ─── PetaClient.tsx — Better frame, gradient fade, quantitative legend ───
+peta_tsx = '''"use client";
 import Map, { NavigationControl, Source, Layer } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useState, useMemo, useEffect } from "react";
@@ -208,3 +214,8 @@ export default function PetaClient({ initialRegions }: { initialRegions: any[] }
     </div>
   );
 }
+'''
+with open(os.path.join(FRONTEND_APP, "peta/PetaClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(peta_tsx)
+
+print("PetaClient done")

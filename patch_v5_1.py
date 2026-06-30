@@ -1,4 +1,104 @@
-"use client";
+"""
+Patch v5: Fix all audit issues
+- Consistent 3,009,417 number
+- Data loading with correct HF backend URL hint
+- Remove ENTERPRISE badge from Navbar
+- Remove "?" (encode fix for ticker)
+- Better Peta frame with gradient fade
+- Legend with numeric breakpoints
+- Transparent gradient header/footer principle
+"""
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+FRONTEND_COMPONENTS = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\components"
+
+TOTAL_DATA = "3.009.417"
+TOTAL_INT  = 3009417
+
+# ─── 1. NAVBAR (Remove ENTERPRISE badge, fix encoding) ─────────────────
+navbar_tsx = '''"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, BarChart2, Map, Database, BookOpen, Home } from "lucide-react";
+import { useState } from "react";
+
+const NAV_ITEMS = [
+  { name: "Beranda",     href: "/",          icon: Home      },
+  { name: "Infografis",  href: "/infografis", icon: BarChart2 },
+  { name: "Peta Risiko", href: "/peta",       icon: Map       },
+  { name: "Data",        href: "/data",       icon: Database  },
+  { name: "Metodologi",  href: "/about",      icon: BookOpen  },
+];
+
+export function Navbar() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 h-16 glass border-b border-white/30 shadow-sm">
+        <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <span className="font-serif font-black text-xl tracking-tight text-slate-900">
+              Panta<span className="text-[#1E88E5]">Uang</span>
+            </span>
+            <span className="hidden sm:inline text-[10px] font-bold text-slate-400 font-sans tracking-widest ml-1">KITA</span>
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_ITEMS.map((item) => {
+              const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <Link key={item.href} href={item.href}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold font-sans transition-all duration-200 ${
+                    active ? "bg-slate-900 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}>
+                  <item.icon className="w-3.5 h-3.5" />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <button className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100" onClick={() => setOpen(!open)}>
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile drawer */}
+      <div className={`fixed inset-0 z-40 transition-all duration-300 md:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`}>
+        <div className={`absolute inset-0 bg-slate-900/40 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`} onClick={() => setOpen(false)} />
+        <div className={`absolute top-16 left-0 right-0 glass border-b border-white/30 shadow-xl transition-all duration-300 ${open ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"}`}>
+          <nav className="flex flex-col p-4 gap-1">
+            {NAV_ITEMS.map((item) => {
+              const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold font-sans transition-all ${
+                    active ? "bg-slate-900 text-white" : "text-slate-700 hover:bg-slate-100"
+                  }`}>
+                  <item.icon className="w-4 h-4" />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+    </>
+  );
+}
+'''
+with open(os.path.join(FRONTEND_COMPONENTS, "layout/Navbar.tsx"), "w", encoding="utf-8") as f:
+    f.write(navbar_tsx)
+
+print("Navbar done")
+
+# ─── 2. HOMELIENT (fix "?" from Activity icon, use consistent number) ───
+home_tsx = '''"use client";
 import { motion } from "framer-motion";
 import { Database, AlertOctagon, TrendingUp, ArrowRight, ExternalLink, Map as MapIcon, BarChart2, Zap } from "lucide-react";
 import Link from "next/link";
@@ -103,7 +203,7 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
                       {pieData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
                     </Pie>
                     <Tooltip contentStyle={{ borderRadius: "10px", border: "none", boxShadow: "0 8px 24px rgba(0,0,0,0.1)", fontFamily: "var(--font-jakarta)", fontSize: "12px" }}
-                      formatter={(val: any, name: any) => [`${val.toLocaleString("id-ID")} paket`, name]} />
+                      formatter={(val: any, name: string) => [`${val.toLocaleString("id-ID")} paket`, name]} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -170,3 +270,8 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
     </div>
   );
 }
+'''
+with open(os.path.join(FRONTEND_APP, "HomeClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(home_tsx)
+
+print("HomeClient done")
