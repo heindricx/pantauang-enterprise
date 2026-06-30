@@ -45,7 +45,7 @@ function useData(pageSize: number, filters: Filters, sort: Sort) {
     setLoad(true);
     setError(false);
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const base = process.env.NEXT_PUBLIC_API_URL || "https://heindricx-pantauang-backend.hf.space";
       const q = new URLSearchParams({
         limit: String(pageSize),
         offset: String((p - 1) * pageSize),
