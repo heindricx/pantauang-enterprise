@@ -20,7 +20,7 @@ export default function AboutClient({ stats }: { stats: any }) {
         {/* Header */}
         <motion.div initial="hidden" animate="visible" variants={fadeUp} className="text-center">
           <h1 className="font-serif font-black text-[clamp(2rem,4vw,3.5rem)] tracking-tight mb-3 text-slate-900">
-            Metodologi &amp; <span className="text-[#7E57C2]">Model Card</span>
+            Metodologi
           </h1>
           <p className="text-slate-500 font-sans text-sm max-w-2xl mx-auto leading-relaxed">
             Transparansi penuh atas arsitektur model machine learning yang kami gunakan untuk memproses jutaan data pengadaan. 
