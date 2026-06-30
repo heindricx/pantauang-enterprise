@@ -174,9 +174,13 @@ export default function DataClient({ filterOptions }: { filterOptions?: any }) {
   return (
     <div className="min-h-screen font-sans py-8 px-4 md:px-8 bg-grid">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <h1 className="font-serif font-black text-[clamp(1.8rem,3vw,2.8rem)] text-slate-900">Audit-Ready Data Explorer</h1>
-          <p className="text-slate-500 text-sm font-sans mt-1">
+        {/* HEADER */}
+        <div className="mb-10 text-center">
+          <h1 className="font-serif font-black text-4xl text-slate-900 mb-3">Eksplorasi Data Risiko</h1>
+          <p className="text-slate-500 font-sans">
+            Filter dan selidiki 3 juta anomali pengadaan yang terdeteksi oleh PantaUang secara real-time.
+          </p>
+          <div className="mt-4">
             {loading ? (
               <span className="inline-flex items-center gap-1.5 text-slate-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1E88E5] animate-pulse" />
@@ -187,7 +191,7 @@ export default function DataClient({ filterOptions }: { filterOptions?: any }) {
             ) : (
               <><span className="font-bold text-slate-700">{total.toLocaleString("id-ID")}</span> baris ditemukan</>
             )}
-          </p>
+          </div>
         </div>
 
         {/* FILTER BAR */}

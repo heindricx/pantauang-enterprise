@@ -100,24 +100,21 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
               </motion.div>
 
               <motion.h1 variants={fadeUp} custom={1} initial="hidden" animate="visible"
-                className="font-serif font-black text-[clamp(2.8rem,5vw,4.5rem)] text-slate-900 leading-[1.08] tracking-tight mb-6">
-                Intelijen Pengadaan{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E88E5] to-[#7E57C2]">
-                  Transparan dan Akurat.
-                </span>
+                className="font-serif font-black text-[clamp(2.5rem,5vw,4.5rem)] text-slate-900 leading-[1.1] tracking-tight">
+                Selamat datang di <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E88E5] to-[#42A5F5]">PantaUang</span>
               </motion.h1>
 
               <motion.p variants={fadeUp} custom={2} initial="hidden" animate="visible"
-                className="text-slate-500 font-sans text-[clamp(1rem,1.3vw,1.125rem)] leading-relaxed mb-8 max-w-lg">
-                Platform PantaUang Kita menyediakan analisis risiko pengadaan barang dan jasa pemerintah menggunakan machine learning mutakhir. Eksplorasi hasil training dan testing klasifikasi risiko dengan mudah.
+                className="text-slate-500 font-sans text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+                Platform PantaUang menyediakan analisis risiko pengadaan barang dan jasa pemerintah menggunakan metode machine learning.
               </motion.p>
 
-              <motion.div variants={fadeUp} custom={3} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-3">
-                <Link href="/data" className="flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-                  Mulai Eksplorasi Data <ArrowRight className="w-4 h-4" />
+              <motion.div variants={fadeUp} custom={3} initial="hidden" animate="visible" className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                <Link href="/data" className="group px-8 py-4 bg-slate-900 text-white rounded-full font-bold font-sans hover:bg-slate-800 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-1">
+                  Cek Data Risiko <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/peta" className="flex items-center justify-center gap-2 px-6 py-3.5 glass border border-slate-200 text-slate-700 hover:bg-white rounded-xl font-bold text-sm transition-all">
-                  Lihat Peta Risiko <ExternalLink className="w-4 h-4" />
+                <Link href="/peta" className="px-8 py-4 bg-white text-slate-700 rounded-full font-bold font-sans border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-1">
+                  Cek Peta Risiko
                 </Link>
               </motion.div>
             </div>
@@ -184,13 +181,13 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
       {/* FEATURE CARDS with Visual Miniatures */}
       <section className="bg-slate-900 bg-dot-dark px-6 md:px-12 py-20">
         <div className="max-w-6xl mx-auto">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="font-serif font-black text-[clamp(2rem,3vw,3rem)] text-white text-center mb-3">
-            Modul Analitik Terintegrasi
-          </motion.h2>
-          <p className="text-slate-500 font-sans text-center text-sm mb-12 max-w-xl mx-auto">
-            Setiap modul dirancang untuk penyelidikan data dari sudut pandang yang berbeda namun saling melengkapi.
-          </p>
+            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              className="font-serif font-black text-[clamp(2rem,3vw,3rem)] text-white text-center mb-3">
+              Data Hasil Analisis
+            </motion.h2>
+            <p className="text-slate-500 font-sans text-center text-sm mb-12 max-w-xl mx-auto">
+              Data hasil analisis disajikan dalam bentuk infografis, peta risiko, dan data tabel.
+            </p>
 
           <div className="grid md:grid-cols-3 gap-6">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0 }}>

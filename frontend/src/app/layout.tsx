@@ -8,7 +8,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "PantaUang Kita | Procurement Intelligence Platform",
+  title: "PantaUang | Procurement Intelligence Platform",
   description: "Platform intelijen risiko pengadaan pemerintah berbasis machine learning.",
 };
 

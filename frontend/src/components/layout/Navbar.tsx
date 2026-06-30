@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { name: "Infografis",  href: "/infografis", icon: BarChart2 },
   { name: "Peta Risiko", href: "/peta",       icon: Map       },
   { name: "Data",        href: "/data",       icon: Database  },
-  { name: "Metodologi",  href: "/about",      icon: BookOpen  },
+  { name: "Metodologi",  href: "/metode",     icon: BookOpen  },
 ];
 
 export function Navbar() {
@@ -24,7 +24,6 @@ export function Navbar() {
             <span className="font-serif font-black text-xl tracking-tight text-slate-900">
               Panta<span className="text-[#1E88E5]">Uang</span>
             </span>
-            <span className="hidden sm:inline text-[10px] font-bold text-slate-400 font-sans tracking-widest ml-1">KITA</span>
           </Link>
 
           {/* Desktop nav */}
