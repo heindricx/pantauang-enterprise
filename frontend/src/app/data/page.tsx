@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 async function fetchSSR(endpoint: string) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://heindricx-pantauang-backend.hf.space";
