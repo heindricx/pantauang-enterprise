@@ -1,4 +1,8 @@
-"use client";
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+about_tsx = r'''"use client";
 import { Server, Target, ArrowRight, BrainCircuit, Database, FileText, Cpu, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
@@ -166,3 +170,8 @@ export default function AboutClient({ stats }: { stats: any }) {
     </div>
   );
 }
+'''
+with open(os.path.join(FRONTEND_APP, "about/AboutClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(about_tsx)
+
+print("AboutClient updated with Visuals")

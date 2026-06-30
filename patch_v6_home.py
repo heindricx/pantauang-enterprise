@@ -1,4 +1,8 @@
-"use client";
+import os
+
+FRONTEND_APP = r"D:\satdat 2026\sec\pantauang-enterprise\frontend\src\app"
+
+home_tsx = r'''"use client";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { Database, AlertOctagon, TrendingUp, ArrowRight, ExternalLink, Map as MapIcon, BarChart2, Zap } from "lucide-react";
 import Link from "next/link";
@@ -260,3 +264,8 @@ export default function HomeClient({ tickerData, metricsData }: { tickerData: an
     </div>
   );
 }
+'''
+with open(os.path.join(FRONTEND_APP, "HomeClient.tsx"), "w", encoding="utf-8") as f:
+    f.write(home_tsx)
+
+print("HomeClient updated with animated counters and thumbnails")
