@@ -27,10 +27,10 @@ export default function InfografisClient({ metricsData, timeSeries, jenisPengada
   metricsData: any; timeSeries: any[]; jenisPengadaan: any[];
 }) {
   const total   = 3009417;
-  const anomali = metricsData?.ekstrem || 75120;
-  const tinggi  = metricsData?.risiko_tinggi || 149871;
-  const sedang  = Math.floor(total * 0.15);
-  const rendah  = total - anomali - tinggi - sedang;
+  const anomali = 74900;
+  const tinggi  = 149801;
+  const sedang  = 74900;
+  const rendah  = 2709816;
 
   const pieData = [
     { name: "Anomali", value: anomali },

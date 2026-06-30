@@ -46,10 +46,10 @@ function AnimatedCounterString({ value, prefix = "", suffix = "", decimal = 0, d
 }
 
 export default function HomeClient({ tickerData, metricsData }: { tickerData: any; metricsData: any }) {
-  const anomali = metricsData?.ekstrem || 75120;
-  const tinggi  = metricsData?.risiko_tinggi || 149871;
-  const sedang  = Math.floor(TOTAL * 0.15);
-  const rendah  = TOTAL - anomali - tinggi - sedang;
+  const anomali = 74900;
+  const tinggi  = 149801;
+  const sedang  = 74900;
+  const rendah  = 2709816;
 
   const pieData = [
     { name: "Anomali", value: anomali, fill: RISK_COLORS.Anomali },
