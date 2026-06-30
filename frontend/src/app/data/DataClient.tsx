@@ -58,7 +58,7 @@ function useData(pageSize: number, filters: Filters, sort: Sort) {
       if (filters.metode)   q.set("metode",   filters.metode);
 
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 60000); // 60s timeout for Hugging Face cold start
       const res = await fetch(`${base}/procurement?${q}`, { signal: controller.signal, cache: "no-store" });
       clearTimeout(timeout);
       if (!res.ok) throw new Error("bad response");
@@ -71,22 +71,9 @@ function useData(pageSize: number, filters: Filters, sort: Sort) {
       setPages(json.total_pages || 1);
     } catch {
       setError(true);
-      // Fallback dummy data so the UI still looks complete without a backend
-      const dummyData = Array.from({ length: pageSize }).map((_, i) => {
-        const score = Math.random() * 100;
-        return {
-          id: `DUMMY-${p}-${i}`,
-          agenda: `[Mode Offline] Pengadaan Fiktif #${i + 1} untuk Evaluasi UI`,
-          lembaga: ["Kementerian Kesehatan", "Pemerintah Provinsi", "Kementerian PUPR", "Kementerian Keuangan"][i % 4],
-          provinsi: ["DKI Jakarta", "Jawa Barat", "Jawa Timur", "Bali"][i % 4],
-          pagu: Math.random() * 5000000000 + 100000000,
-          skor_risiko: score,
-          kategori_risiko: classify(score)
-        };
-      });
-      setRows(dummyData);
-      setTotal(3009417);
-      setPages(Math.ceil(3009417 / pageSize));
+      setRows([]);
+      setTotal(0);
+      setPages(1);
     } finally {
       setLoad(false);
     }
@@ -196,7 +183,7 @@ export default function DataClient({ filterOptions }: { filterOptions?: any }) {
                 Memfilter 3.009.417 baris data...
               </span>
             ) : error ? (
-              <span className="text-orange-500">Mode Offline (Menampilkan data dummy). Pastikan backend berjalan untuk data riil.</span>
+              <span className="text-orange-500">Gagal mengambil data dari server TiDB. Server mungkin sedang cold-start (butuh ~30 detik). Silakan refresh halaman.</span>
             ) : (
               <><span className="font-bold text-slate-700">{total.toLocaleString("id-ID")}</span> baris ditemukan</>
             )}
@@ -284,6 +271,18 @@ export default function DataClient({ filterOptions }: { filterOptions?: any }) {
                       ))}
                     </tr>
                   ))
+                ) : error ? (
+                  <tr>
+                    <td colSpan={7} className="py-16 text-center">
+                      <div className="flex flex-col items-center gap-3 text-slate-400 font-sans text-sm">
+                        <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+                          <Search className="w-5 h-5 text-slate-300" />
+                        </div>
+                        <p className="font-bold text-slate-600">Gagal Memuat Data</p>
+                        <p className="text-xs max-w-xs text-center">Koneksi ke database TiDB terputus atau *timeout*. Silakan muat ulang (refresh) halaman ini.</p>
+                      </div>
+                    </td>
+                  </tr>
                 ) : rows.length === 0 ? (
                   <tr><td colSpan={7} className="py-12 text-center text-slate-400 text-sm font-sans">Tidak ada data untuk filter ini.</td></tr>
                 ) : rows.map(row => {
